@@ -3,26 +3,34 @@ from time import time
 class Processo:
     def __init__(self, base):
         self.base = base
-        self.atual = 100000
+        self.atual = 0
+        self.count = 0
+        self.preempcoes = 0
 
-quantum = 1
-preempções = 0
+quantum = 0.001 # em segundos
+preempcoes = 0
 processo1 = Processo(2)
 processo2 = Processo(3)
 processo3 = Processo(5)
 
 fila = [processo1, processo2, processo3]
-começo = time()
+comeco = time()
 
 while fila:
     inicio = time()
-    while fila[0].atual > 0 and time() < inicio + (quantum/1000):
+    while fila[0].atual < 100000 and time() < inicio + (quantum):
         fila[0].base * fila[0].base
-        fila[0].atual -= 1
-    if fila[0].atual == 0:
-        print(f'o processo {fila[0].base} terminou de executar após { inicio -começo :.4f} segundos!')
+        fila[0].atual += 1
+        fila[0].count += 1
+    if fila[0].atual == 100000:
+        print(f'================== Processo {fila[0].base} ==================')
+        print(f'Tempo de execução: { inicio - comeco :.3f} s')
+        print(f'Média de contas:   {fila[0].count / fila[0].preempcoes :.3f} contas / preempção')
+        fila[0].count = 0
         fila.pop(0)
     else:
+        fila[0].preempcoes += 1
         fila.append(fila.pop(0))
-    preempções += 1
-print(f'tudo pronto, houveram {preempções} preempções no total')
+    preempcoes += 1
+
+print(f'Total de preempções: {preempcoes}')
