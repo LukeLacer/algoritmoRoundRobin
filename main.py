@@ -22,11 +22,7 @@ def runProcessos(i, quantum):
             fila[0].atual += 1
         if fila[0].atual == 100000:
             fila[0].preempcoes += 1
-            print(f'\n================== Processo {fila[0].base} ==================')
             fila[0].tempo_execucao = inicio - comeco
-            print(f'Tempo de execução:   {fila[0].tempo_execucao :.3f} s')
-            print(f'Total de preempções: {fila[0].preempcoes} preempções')
-            print(f'================================================\n')
             fila.pop(0)
         else:
             fila[0].preempcoes += 1
@@ -39,7 +35,7 @@ def runProcessos(i, quantum):
     arquivo.close()
 
     total_preempçoes = processo1.preempcoes + processo2.preempcoes + processo3.preempcoes
-    print(f'Total de preempções: {total_preempçoes}')
+    print(f'Processo {quantum} da execução {i} terminou. Total de preempções: {total_preempçoes}')
 
 for i in range(1,11):
     runProcessos(i, 0.001)
